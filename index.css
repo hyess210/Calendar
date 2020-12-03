@@ -1,0 +1,10 @@
+.Calendar {
+  float: right;
+  width: 50%;
+}
+
+.DateInfo {
+  float: left;
+  width: 50%;
+  background-color: #f2858e;
+}
