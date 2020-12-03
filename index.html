@@ -4,9 +4,31 @@
         <title>Sun Calendar</title>
         <meta charset="utf-8">
         <link href="index.css" rel="stylesheet">
-        <script src="index.js"></script>
     </head>
     <body>
+        <div class="Calendar">
+            <div class="calendarYear"></div>
+            <div class="content">
+                <div class="calendarMonth"></div>
+                <div class="week"></div>
+                <div class="days">
+                    <table class="calendarTable">
+                      <thead>
+                        <tr>
+                          <th>SUN</th>
+                          <th>월</th>
+                          <th>화</th>
+                          <th>수</th>
+                          <th>목</th>
+                          <th>금</th>
+                          <th>토</th>
+                        </tr>
+                      </thead>
+                      <tbody class="calendarBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="DateInfo">
             <div class="today"></div>
             <div class="searchDate">
@@ -17,13 +39,6 @@
                 <span> 후</span>
             </div>
         </div>
-        <div class="Calendar">
-            <div class="header">2020</div>
-            <div class="content">
-                <div class="month"></div>
-                <div class="week"></div>
-                <div class="days"></div>
-            </div>
-        </div>
+        <script src="index.js"></script>
     </body>
 </html>
