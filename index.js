@@ -41,7 +41,6 @@ const DateInit = {
   },
   formatNumber: (num) => (num < 10 ? '0' + num : num),
   selectedDateTag: null,
-  selectedDate = new Date(),
   getIndex: function (node) {
     let index = 0;
     while ((node = node.previousElementSibling)) {
@@ -99,11 +98,9 @@ const getCalendarYearMonth = (fullDate) => {
           DateInit.formatNumber(month + 1) +
           '.' +
           DateInit.formatNumber(dayCount + 1);
-          console.log(DateInit.selectedDate);
 
         tableTag += `<td> 
-        <span onclick={dateClick(${dayCount + 1}),
-        ${month}} 
+        <span onclick={dateClick(${dayCount + 1},${month+1})}
         class="day`;
 
         tableTag +=
@@ -130,7 +127,6 @@ $calendarBody.addEventListener('click', (e) => {
     getCalendarDate(day, e.target.cellIndex);
     e.target.classList.add('day-active');
     DateInit.selectedDateTag = e.target;
-    DateInit.selectedDate = e.target;
     DateInit.activeDate.setDate(day);
 
     getCalendarYearMonth(DateInit.today);
