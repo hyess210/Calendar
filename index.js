@@ -2,22 +2,28 @@ const setTextContent = (element, content) => {
   document.querySelector(element).textContent = content;
 };
 
+const setToday = (init) => {
+  getCalendarYearMonth(init);
+  getCalendarDate(init.getDate(), init.getDay());
+}
+
 let calculatedDate = 0;
+const now = new Date();
 
 const DateInit = {
   monthList: [
-    '1월',
-    '2월',
-    '3월',
-    '4월',
-    '5월',
-    '6월',
-    '7월',
-    '8월',
-    '9월',
-    '10월',
-    '11월',
-    '12월',
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
   ],
   dayNameList: ['SUN', '월', '화', '수', '목', '금', '토'],
   today: new Date(),
@@ -55,8 +61,8 @@ const $btnNext = document.querySelector('.cal-buttonStyle.next');
 const $btnPrev = document.querySelector('.cal-buttonStyle.prev');
 
 const getCalendarDate = (date, day) => {
-  setTextContent('.calendarDate', date);
-  setTextContent('.calendarDay', DateInit.dayNameList[day]);
+  setTextContent('.calendarDate', DateInit.today.getDate());
+  setTextContent('.calendarDay', DateInit.dayNameList[DateInit.today.getDay()]);
 };
 
 const getCalendarYearMonth = (fullDate) => {
@@ -76,7 +82,7 @@ const getCalendarYearMonth = (fullDate) => {
   document.querySelector('.calendarMonth').textContent =
     DateInit.monthList[month];
   document.querySelector('.calendarMonth-info').textContent =
-    DateInit.monthList[month];
+  (DateInit.today.getMonth()+1)+'월';
   document.querySelector('.calendarYear').textContent = year;
 
   let tableTag = '';
@@ -118,6 +124,9 @@ const getCalendarYearMonth = (fullDate) => {
   $calendarBody.innerHTML = tableTag;
 };
 
+$btnNext.addEventListener('click', () => getCalendarYearMonth(DateInit.nextMonth()));
+$btnPrev.addEventListener('click', () => getCalendarYearMonth(DateInit.prevMonth()));
+
 $calendarBody.addEventListener('click', (e) => {
   if (e.target.classList.contains('day')) {
     if (DateInit.selectedDateTag) {
@@ -128,17 +137,38 @@ $calendarBody.addEventListener('click', (e) => {
     e.target.classList.add('day-active');
     DateInit.selectedDateTag = e.target;
     DateInit.activeDate.setDate(day);
-
-    getCalendarYearMonth(DateInit.today);
-    getCalendarDate(DateInit.today.getDate(), DateInit.today.getDay());
   }
+  
+// setToday(DateInit.today);
 });
 
-getCalendarYearMonth(DateInit.today);
-getCalendarDate(DateInit.today.getDate(), DateInit.today.getDay());
+setToday(DateInit.today);
 
 const dateClick = (clickedDate, month) => {
-  calculatedDate++;
-  setTextContent('#calculated-date', calculatedDate + '일');
-  console.log(clickedDate);
+  let end = new Date();
+  let start = new Date();
+  let beforeAfterString = '후';
+  let todayDate = DateInit.today.getDate();
+  
+  clickedDate > todayDate ? 
+  (
+    start = new Date(0,month,todayDate-1),
+    end = new Date(0,month,clickedDate)
+    ) : 
+  (
+    start = new Date(0,month,clickedDate),
+    end = new Date(0,month,todayDate),
+    beforeAfterString = '전'
+    );
+  
+  while (end > start) {
+    calculatedDate++;
+    start.setDate(start.getDate() + 1);
+  }
+
+  console.log(DateInit.selectedDateTag);
+  setTextContent('#selected-date', `${start.getMonth()}월 ${start.getDate()}일은`);
+  setTextContent('#calculated-date', calculatedDate + '일 ' + beforeAfterString + ' 입니다.');
+
+  calculatedDate = 0;
 };

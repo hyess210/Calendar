@@ -73,6 +73,10 @@
   outline: none;
 }
 
+.calculationDate-content {
+  color: #ffc1c1;
+}
+
 .calendarTable {
   text-align: center;
 }
@@ -107,7 +111,7 @@
 
 .calendarTable td span.day-active {
   background: #ff8585;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   color: #fff;
 }
 
