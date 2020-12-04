@@ -5,26 +5,13 @@ const setTextContent = (element, content) => {
 const setToday = (init) => {
   getCalendarYearMonth(init);
   getCalendarDate(init.getDate(), init.getDay());
-}
+};
 
-let calculatedDate = 0;
-const now = new Date();
+let calculatedDate = new Date('yyyy-mm-dd');
+let serchDate = new Date('yyyy-mm-dd');
 
 const DateInit = {
-  monthList: [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-  ],
+  monthList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   dayNameList: ['SUN', '월', '화', '수', '목', '금', '토'],
   today: new Date(),
   monForChange: new Date().getMonth(),
@@ -82,7 +69,7 @@ const getCalendarYearMonth = (fullDate) => {
   document.querySelector('.calendarMonth').textContent =
     DateInit.monthList[month];
   document.querySelector('.calendarMonth-info').textContent =
-  (DateInit.today.getMonth()+1)+'월';
+    DateInit.today.getMonth() + 1 + '월';
   document.querySelector('.calendarYear').textContent = year;
 
   let tableTag = '';
@@ -106,7 +93,7 @@ const getCalendarYearMonth = (fullDate) => {
           DateInit.formatNumber(dayCount + 1);
 
         tableTag += `<td> 
-        <span onclick={dateClick(${dayCount + 1},${month+1})}
+        <span onclick={dateClick(${dayCount + 1},${month + 1})}
         class="day`;
 
         tableTag +=
@@ -124,8 +111,12 @@ const getCalendarYearMonth = (fullDate) => {
   $calendarBody.innerHTML = tableTag;
 };
 
-$btnNext.addEventListener('click', () => getCalendarYearMonth(DateInit.nextMonth()));
-$btnPrev.addEventListener('click', () => getCalendarYearMonth(DateInit.prevMonth()));
+$btnNext.addEventListener('click', () =>
+  getCalendarYearMonth(DateInit.nextMonth())
+);
+$btnPrev.addEventListener('click', () =>
+  getCalendarYearMonth(DateInit.prevMonth())
+);
 
 $calendarBody.addEventListener('click', (e) => {
   if (e.target.classList.contains('day')) {
@@ -138,37 +129,67 @@ $calendarBody.addEventListener('click', (e) => {
     DateInit.selectedDateTag = e.target;
     DateInit.activeDate.setDate(day);
   }
-  
-// setToday(DateInit.today);
-});
 
+  serchDate = `${DateInit.activeDate.getFullYear()}-${
+    DateInit.activeDate.getMonth() + 1
+  }-${DateInit.formatNumber(DateInit.activeDate.getDate())}`;
+  document.querySelector('.searchDate').value = serchDate;
+  console.log(serchDate);
+  // setToday(DateInit.today);
+  dateClick(DateInit.activeDate,DateInit.activeDate.getMonth());
+});
 setToday(DateInit.today);
+
+const searchDateClick = (value) => {
+  // getCalendarDate(day, value);
+  // value.target.classList.add('day-active');
+  if (DateInit.selectedDateTag) {
+    DateInit.selectedDateTag.classList.remove('day-active');
+  }
+  console.log(value);
+};
 
 const dateClick = (clickedDate, month) => {
   let end = new Date();
   let start = new Date();
   let beforeAfterString = '후';
-  let todayDate = DateInit.today.getDate();
-  
-  clickedDate > todayDate ? 
-  (
-    start = new Date(0,month,todayDate-1),
-    end = new Date(0,month,clickedDate)
-    ) : 
-  (
-    start = new Date(0,month,clickedDate),
-    end = new Date(0,month,todayDate),
-    beforeAfterString = '전'
-    );
-  
+  let todayDate = DateInit.today;
+
+  clickedDate > todayDate
+    ? ((start = new Date(
+      `${DateInit.today.getFullYear()
+    }-${(DateInit.today.getMonth())+1
+    }-${DateInit.today.getDate()}`
+    )),
+      (end = new Date(
+        `${DateInit.activeDate.getFullYear()
+        }-${(DateInit.activeDate.getMonth())+1
+        }-${DateInit.activeDate.getDate()}`
+      ))
+      )
+    : ((start = new Date(
+      `${DateInit.activeDate.getFullYear()
+      }-${(DateInit.activeDate.getMonth())+1
+      }-${DateInit.activeDate.getDate()}`
+    )),
+      (end = new Date(
+        `${DateInit.today.getFullYear()
+      }-${(DateInit.today.getMonth())+1
+      }-${DateInit.today.getDate()}`)),
+      (beforeAfterString = '전'));
+
   while (end > start) {
     calculatedDate++;
     start.setDate(start.getDate() + 1);
   }
 
-  console.log(DateInit.selectedDateTag);
-  setTextContent('#selected-date', `${start.getMonth()}월 ${start.getDate()}일은`);
-  setTextContent('#calculated-date', calculatedDate + '일 ' + beforeAfterString + ' 입니다.');
-
+  setTextContent(
+    '#selected-date',
+    `${(DateInit.activeDate.getMonth())+1}월 ${DateInit.activeDate.getDate()}일은`
+  );
+  setTextContent(
+    '#calculated-date',
+    calculatedDate + '일 ' + beforeAfterString + ' 입니다.'
+  );
   calculatedDate = 0;
 };

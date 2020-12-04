@@ -11,13 +11,15 @@
     <div class="Calendar">
       <div class="calendar-Header">
         <div class="calendarYear"></div>
-        <button type="button" title="prev" class="cal-buttonStyle prev">
-          <
-        </button>
-        <div class="calendarMonth"></div>
-        <button type="button" title="next" class="cal-buttonStyle next">
-          >
-        </button>
+        <div>
+          <button type="button" title="prev" class="cal-buttonStyle prev">
+            ◀
+          </button>
+          <div class="calendarMonth"></div>
+          <button type="button" title="next" class="cal-buttonStyle next">
+            ▶
+          </button>
+        </div>
       </div>
       <div class="content">
         <div class="week"></div>
@@ -42,7 +44,6 @@
     <div class="DateInfo">
       <div class="today"></div>
       <div class="calculationDate">
-        오늘은 
         <span class="calendarMonth-info"></span>
         <span class="calendarDate"></span>일
         <span class="calendarDay"></span>요일
@@ -53,7 +54,13 @@
         </div>
       </div>
       <div class="searchDate-wrap">
-        <input type="date" class="searchDate" />
+        <input type="date" class="searchDate" value="2020-12-02"/>
+        <button
+          class="searchDate-btn"
+          onclick="searchDateClick(document.querySelector('.searchDate').value)"
+        >
+          선택
+        </button>
       </div>
     </div>
     <script src="index.js"></script>

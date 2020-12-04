@@ -5,6 +5,7 @@
   outline: none;
   overflow: hidden;
   font-family: 'Noto Sans KR', sans-serif;
+  user-select: none;
 }
 
 .Calendar {
@@ -24,13 +25,15 @@
 }
 
 .calendarYear {
-  font-size: 40px;
-  text-align: right;
+  font-size: 44px;
+  text-align: left;
+  margin-left: 3%;
+  color: #888;
 }
 
 .calendarMonth {
-  font-size: 24px;
-  text-align: right;
+  font-size: 30px;
+  text-align: left;
   color: #bbb;
 }
 
@@ -45,6 +48,7 @@
 }
 
 .calendarMonth {
+  display: inline;
 }
 
 .calendarDate {
@@ -53,11 +57,24 @@
 .calendarDay {
 }
 
+.searchDate-btn {
+  cursor: pointer;
+  background-color: transparent;
+  width: 60px;
+  border: 0;
+  font-size: 18px;
+  color: #ffc1c1;
+  transition: 0.2s;
+}
+.searchDate-btn:hover {
+  color: #fff;
+}
+
 .searchDate[type='date'] {
   text-align: center;
   font-size: 20px;
   background-color: #f2858e;
-  width: 25vw;
+  width: 20vw;
   border: 0;
   border-bottom: 1px solid #fff;
   color: #fff;
@@ -110,7 +127,7 @@
 }
 
 .calendarTable td span.day-active {
-  background: #ff8585;
+  background: #f2858e;
   /* border-radius: 50%; */
   color: #fff;
 }
@@ -118,4 +135,18 @@
 .calendarTable td span.today {
   background: #bbb;
   color: #fff;
+}
+
+.cal-buttonStyle {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border: 0;
+  color: #bbb;
+  transition: 0.2s;
+}
+.cal-buttonStyle:hover {
+  color: #aaa;
+  font-size: 18px;
 }
