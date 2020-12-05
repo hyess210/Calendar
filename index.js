@@ -7,8 +7,8 @@ const setToday = (init) => {
   getCalendarDate(init.getDate(), init.getDay());
 };
 
-let calculatedDate = new Date('yyyy-mm-dd');
-let serchDate = new Date('yyyy-mm-dd');
+let calculatedDate = 0;
+let searchDate = new Date('yyyy-mm-dd');
 
 const DateInit = {
   monthList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -58,6 +58,7 @@ const getCalendarYearMonth = (fullDate) => {
   let startDay = DateInit.getstartDay(year, month);
   let endDay = DateInit.getendDay(year, month);
   let writeToday;
+  console.log(fullDate);
 
   if (
     month === DateInit.today.getMonth() &&
@@ -93,7 +94,7 @@ const getCalendarYearMonth = (fullDate) => {
           DateInit.formatNumber(dayCount + 1);
 
         tableTag += `<td> 
-        <span onclick={dateClick(${dayCount + 1},${month + 1})}
+        <span onclick={dateClick(${dayCount + 1})}
         class="day`;
 
         tableTag +=
@@ -130,53 +131,58 @@ $calendarBody.addEventListener('click', (e) => {
     DateInit.activeDate.setDate(day);
   }
 
-  serchDate = `${DateInit.activeDate.getFullYear()}-${
+  searchDate = `${DateInit.activeDate.getFullYear()}-${
     DateInit.activeDate.getMonth() + 1
   }-${DateInit.formatNumber(DateInit.activeDate.getDate())}`;
-  document.querySelector('.searchDate').value = serchDate;
-  console.log(serchDate);
-  // setToday(DateInit.today);
-  dateClick(DateInit.activeDate,DateInit.activeDate.getMonth());
+
+  document.querySelector('.searchDate').value = searchDate;
+  dateClick(DateInit.activeDate);
 });
 setToday(DateInit.today);
 
-const searchDateClick = (value) => {
-  // getCalendarDate(day, value);
-  // value.target.classList.add('day-active');
-  if (DateInit.selectedDateTag) {
-    DateInit.selectedDateTag.classList.remove('day-active');
-  }
-  console.log(value);
+const searchDateClick = (e) => {
+  const day = new Date(e);
+  searchDate = `${day.getFullYear()}-${
+    day.getMonth() + 1
+  }-${DateInit.formatNumber(day.getDate())}`;
+
+  DateInit.activeDate = new Date(searchDate);
+  dateClick(DateInit.activeDate);
+  getCalendarYearMonth(new Date(e));
 };
 
-const dateClick = (clickedDate, month) => {
+const dateClick = (clickedDate) => {
+  if (isNaN(clickedDate)) {
+    alert("날짜를 선택해주세요.")
+    return;
+  }
   let end = new Date();
   let start = new Date();
   let beforeAfterString = '후';
   let todayDate = DateInit.today;
 
-  clickedDate > todayDate
-    ? ((start = new Date(
-      `${DateInit.today.getFullYear()
-    }-${(DateInit.today.getMonth())+1
-    }-${DateInit.today.getDate()}`
-    )),
-      (end = new Date(
-        `${DateInit.activeDate.getFullYear()
-        }-${(DateInit.activeDate.getMonth())+1
-        }-${DateInit.activeDate.getDate()}`
-      ))
-      )
-    : ((start = new Date(
-      `${DateInit.activeDate.getFullYear()
-      }-${(DateInit.activeDate.getMonth())+1
+  if (clickedDate > todayDate) {
+    start = new Date(
+      `${todayDate.getFullYear()}-${
+        todayDate.getMonth() + 1
+      }-${todayDate.getDate()}`);
+    end = new Date(
+      `${DateInit.activeDate.getFullYear()}-${
+        DateInit.activeDate.getMonth() + 1
       }-${DateInit.activeDate.getDate()}`
-    )),
-      (end = new Date(
-        `${DateInit.today.getFullYear()
-      }-${(DateInit.today.getMonth())+1
-      }-${DateInit.today.getDate()}`)),
-      (beforeAfterString = '전'));
+    );
+  } else {
+    start = new Date(
+      `${DateInit.activeDate.getFullYear()}-${
+        DateInit.activeDate.getMonth() + 1
+      }-${DateInit.activeDate.getDate()}`);
+    end = new Date(
+      `${todayDate.getFullYear()}-${
+        todayDate.getMonth() + 1
+      }-${todayDate.getDate()}`
+    );
+    beforeAfterString = '전';
+  }
 
   while (end > start) {
     calculatedDate++;
@@ -185,7 +191,9 @@ const dateClick = (clickedDate, month) => {
 
   setTextContent(
     '#selected-date',
-    `${(DateInit.activeDate.getMonth())+1}월 ${DateInit.activeDate.getDate()}일은`
+    `${DateInit.activeDate.getFullYear()}년 ${
+      DateInit.activeDate.getMonth() + 1
+    }월 ${DateInit.activeDate.getDate()}일은`
   );
   setTextContent(
     '#calculated-date',
